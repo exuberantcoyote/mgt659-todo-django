@@ -1,0 +1,106 @@
+{% extends "main.html" %}
+{% block content %}
+<h1>CPSC113 Todo</h1>
+
+<div style="color:red" class="validation-error">
+{% comment %}
+{% endcomment %}
+
+    {% if errors %}
+        {{ errors }}
+    {% endif %}
+</div>
+
+{% if currentUser %}
+    <h2>Welcome, {{ currentUser }} </h2>
+
+    <section id="create">
+		<h2 id="toggle-create">Create a new todo</h2>
+		<div class="container">
+		    <form id="signup" action="/task/create" method="POST">
+		    	{% csrf_token %}
+		    	<div class="header">
+                    <div class="wrap">
+    				    <div class="mat-div">
+    				        <input type="text" class="mat-input" id="title" name="title" placeholder="Task Title">
+    				    </div>
+    				    <div class="mat-div">
+    				        <input type="text" class="mat-input" id="description" name="description" placeholder="Description">
+    				    </div>
+    				    <div class="mat-div">
+    				        <input type="text" class="mat-input" id="collab-1" name="collaborator1" placeholder="Collaborater 1">
+    				    </div>
+    				    <div class="mat-div">
+    				        <input type="text" class="mat-input" id="collab-2" name="collaborator2" placeholder="Collaborater 2">
+    				    </div>
+    				    <div class="mat-div">
+    				        <input type="text" class="mat-input" id="collab-3" name="collaborator3" placeholder="Collaborater 3"><br>
+    				    </div>
+    				</div>
+			        <button type="submit" form="signup" value="Submit" id="submit">Submit</button>
+		        </div>
+		    </form>
+	    </div>
+	</section>
+    <div><br><hr><br></div>
+    <section class="tasks">
+        <fieldset class="tasks-list">
+            <h3>Todo List</h3>
+            {% if tasks %}
+                {% for task in tasks %}
+                    <div class="tasks-list-item{#if this.isComplete} complete-task {else} {/if}">
+                        <span class="tasks-list-desc task-title"><!--{#if this.isComplete}<strike>{/if}{this.title}{#if this.isComplete}</strike>{/if}--></span>
+                        <!--{#if this.isOwner}-->
+                            <form action="/task/delete" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="DeleteId" value="{this.taskId}">
+                                <input type="hidden" name="taskOwner" value="{this.owner}">
+                                <button type="submit" class="delete-task button">Delete</button>
+                            </form>
+                        <!--{else}-->
+                            <form>
+                                {% csrf_token %}
+                                <input type="hidden" name="DeleteId" value="{this.taskId}">
+                                <input type="hidden" name="taskOwner" value="{this.owner}">
+                            </form>
+                        <!--{/if}-->
+                        <form action="/task/toggle-complete" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="taskId" value="{this.taskId}">
+                            <input type="hidden" name="changeStatus" value="{#if this.isComplete}0{else}1{/if}">
+                            <button type="submit" class="toggle-task button"><!--{#if this.isComplete}Mark Incomplete{else}Mark Complete{/if}--></button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                No tasks to show!
+            {% endif %}
+        </fieldset>
+    </section>
+    
+{% else %}
+<div>
+    <h3>Login</h3>
+    <form class="login-form" action="/user/login" method="POST">
+        {% csrf_token %}
+        <input name="email" type="text" placeholder="Email"><br>
+        <input name="password" type="text" placeholder="Password"><br>
+        <input type="submit" class="log-in-submit">
+    </form>
+</div>
+
+<div><br><hr><br></div>
+
+<div>
+    <h3>SignUp</h3>
+    <form action="/user/register" method="post" class="signup-form" style="display: block;">
+        {% csrf_token %}
+        <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name"><br>
+        <input name="email" type="email" class="text-input" placeholder="email"><br>
+        <input name="password" type="password" class="text-input" placeholder="password"><br>
+        <input name="password_confirmation" type="password" class="text-input" placeholder="password confirmation"><br>
+        <input class="sign-up-submit" type="submit">
+    </form>
+</div>
+{% endif %}
+{% endblock %}

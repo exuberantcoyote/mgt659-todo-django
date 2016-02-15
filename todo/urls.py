@@ -7,5 +7,7 @@ urlpatterns = [
     url(r'^user/login', views.login),
     url(r'^user/logout', views.logout),
     url(r'^task/create', views.taskcreate),
+    url(r'^task/delete', views.taskdelete),
+    url(r'^task/toggle-complete', views.tasktoggle),
     url(r'^', views.index),
 ]

@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
+from django.db.models import Q
 
 from .models import User, Task
 
@@ -12,16 +13,17 @@ def index(request):
             'errors': request.session.get('errors'),
         }
     else:
-        if Task.objects.filter(owner=request.session.get('userId')).count() > 0:
+        currentUser=User.objects.get(id=request.session.get('userId'))
+        if Task.objects.filter(Q(owner=currentUser.id) | Q(collaborator1=currentUser.email) | Q(collaborator2=currentUser.email) | Q(collaborator3=currentUser.email)).count() > 0:
             context = {
                 'errors': request.session.get('errors'),
-                'currentUser': request.session.get('userName'),
-                'tasks': Task.objects.get(owner=request.session.get('userId')),
+                'currentUser': currentUser,
+                'tasks': Task.objects.filter(Q(owner=currentUser.id) | Q(collaborator1=currentUser.email) | Q(collaborator2=currentUser.email) | Q(collaborator3=currentUser.email)),
             }
         else:
             context = {
                 'errors': request.session.get('errors'),
-                'currentUser': request.session.get('userName'),
+                'currentUser': currentUser,
                 'tasks': None,
             }
     return render(request, 'todo/index.html', context)
@@ -33,7 +35,7 @@ def register(request):
     newPasswordConfirm = request.POST['password_confirmation']
     if newPassword != newPasswordConfirm:
         request.session['errors']='Password does not match'
-    elif User.objects.get(email=newEmail) == None:
+    elif User.objects.filter(email=newEmail).count() == 0:
         newUser = User(name=newName,email=newEmail,hashPassword=newPassword)
         newUser.save()
         request.session['userId']=newUser.id
@@ -68,8 +70,23 @@ def taskcreate(request):
     newCollaborator2 = request.POST['collaborator2']
     newCollaborator3 = request.POST['collaborator3']
     if newTitle != None:
-        newTask = Task(title=newTitle,owner=newOwner,description=newDescription,collaborator1=newCollaborator1,collaborator2=newCollaborator2,collaborator3=newCollaborator3)
+        newTask = Task(title=newTitle,owner=newOwner,description=newDescription,collaborator1=newCollaborator1,collaborator2=newCollaborator2,collaborator3=newCollaborator3,isComplete='false')
+        newTask.save()
         request.session['errors']=None
     else:
         request.session['errors']='Error saving task.'
+    return HttpResponseRedirect('todo/index.html')
+
+def taskdelete(request):
+    deleteId = request.POST['deleteId']
+    Task.objects.get(id=deleteId).delete()
+    return HttpResponseRedirect('todo/index.html')
+
+def tasktoggle(request):
+    toggleId = request.POST['taskId']
+    newStatus = request.POST['changeStatus']
+    if newStatus == "1":
+        Task.objects.filter(id=toggleId).update(isComplete=True)
+    else:
+        Task.objects.filter(id=toggleId).update(isComplete=False)
     return HttpResponseRedirect('todo/index.html')

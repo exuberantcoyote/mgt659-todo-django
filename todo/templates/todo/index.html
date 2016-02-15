@@ -12,7 +12,7 @@
 </div>
 
 {% if currentUser %}
-    <h2>Welcome, {{ currentUser }} </h2>
+    <h2>Welcome, {{ currentUser.name }} </h2>
 
     <section id="create">
 		<h2 id="toggle-create">Create a new todo</h2>
@@ -48,28 +48,27 @@
             <h3>Todo List</h3>
             {% if tasks %}
                 {% for task in tasks %}
-                    <div class="tasks-list-item{#if this.isComplete} complete-task {else} {/if}">
-                        <span class="tasks-list-desc task-title"><!--{#if this.isComplete}<strike>{/if}{this.title}{#if this.isComplete}</strike>{/if}--></span>
-                        <!--{#if this.isOwner}-->
-                            <form action="/task/delete" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="DeleteId" value="{this.taskId}">
-                                <input type="hidden" name="taskOwner" value="{this.owner}">
-                                <button type="submit" class="delete-task button">Delete</button>
-                            </form>
-                        <!--{else}-->
-                            <form>
-                                {% csrf_token %}
-                                <input type="hidden" name="DeleteId" value="{this.taskId}">
-                                <input type="hidden" name="taskOwner" value="{this.owner}">
-                            </form>
-                        <!--{/if}-->
+                    <div class="tasks-list-item complete-task ">
+                        <span class="tasks-list-desc task-title">{% if task.isComplete %}<strike>{{ task.title }}</strike>{% else %}{{ task.title }}{% endif %}</span>
                         <form action="/task/toggle-complete" method="POST">
                             {% csrf_token %}
-                            <input type="hidden" name="taskId" value="{this.taskId}">
-                            <input type="hidden" name="changeStatus" value="{#if this.isComplete}0{else}1{/if}">
-                            <button type="submit" class="toggle-task button"><!--{#if this.isComplete}Mark Incomplete{else}Mark Complete{/if}--></button>
+                            <input type="hidden" name="taskId" value="{{ task.id }}">
+                            {% if task.isComplete %}
+                                <input type="hidden" name="changeStatus" value="0">
+                                <button type="submit" class="toggle-task button">Mark Incomplete</button>
+                            {% else %}
+                                <input type="hidden" name="changeStatus" value="1">
+                                <button type="submit" class="toggle-task button">Mark Complete</button>
+                            {% endif %}
                         </form>
+                        {% if task.owner == currentUser.id %}
+                            <form action="/task/delete" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="deleteId" value="{{ task.id }}">
+                                <input type="hidden" name="ownerId" value="{{ task.owner }}">
+                                <button type="submit" class="delete-task button">Delete</button>
+                            </form>
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% else %}

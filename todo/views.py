@@ -70,7 +70,7 @@ def taskcreate(request):
     newCollaborator2 = request.POST['collaborator2']
     newCollaborator3 = request.POST['collaborator3']
     if newTitle != None:
-        newTask = Task(title=newTitle,owner=newOwner,description=newDescription,collaborator1=newCollaborator1,collaborator2=newCollaborator2,collaborator3=newCollaborator3,isComplete='false')
+        newTask = Task(title=newTitle,owner=newOwner,description=newDescription,collaborator1=newCollaborator1,collaborator2=newCollaborator2,collaborator3=newCollaborator3,isComplete=False)
         newTask.save()
         request.session['errors']=None
     else:

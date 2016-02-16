@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-import psycopg2
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,10 +25,6 @@ SECRET_KEY = '3pmkob6v6v%2&7p=0frol%ggni-+t$p^7w%r6ckl&h&-a%2u@q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 
 # Application definition
 
@@ -80,12 +75,18 @@ WSGI_APPLICATION = 'mgt659_todo_django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'todo-app',
-        'USER': 'postgres',
-        'PASSWORD': 'boom1',
-        'HOST': 'localhost',
-        'PORT': '',
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': 'd3hg1tejri5tgg',
+         'USER': 'jdfllnjbjteevv',
+         'PASSWORD': 'yV8IDugWEC-QP_RutIYhSk765e',
+         'HOST': 'ec2-54-83-29-133.compute-1.amazonaws.com',
+         'PORT': '5432',
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'todo-app',
+#        'USER': 'postgres',
+#        'PASSWORD': 'boom1',
+#        'HOST': 'localhost',
+#        'PORT': '',
     }
 }
 

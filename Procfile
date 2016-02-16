@@ -1,1 +1,1 @@
-web: gunicorn mgt659_django.wsgi --log-file -
+web: gunicorn mgt659_todo_django.wsgi --log-file -

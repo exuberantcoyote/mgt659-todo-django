@@ -1,15 +1,23 @@
 from __future__ import unicode_literals
+from django.core.validators import MaxLengthValidator, MinLengthValidator
 
 from django.db import models
 
 # Create your models here.
 class User(models.Model):
     email = models.EmailField(max_length=50, unique=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, validators=[MaxLengthValidator(50), MinLengthValidator(1)])
     hashPassword = models.CharField(max_length=50)
 
     def _str_(self):
         return self.name
+    
+    def validate_length(namestring):
+        if namestring.length() % 2 != 0:
+            raise ValidationError(
+                _('%(value)s is not an even number'),
+                params={'value': value},
+            )
 
 class Task(models.Model):
     owner = models.IntegerField()

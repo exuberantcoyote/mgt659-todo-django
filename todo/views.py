@@ -49,7 +49,7 @@ def register(request):
             request.session['userName']=newUser.name
         else:
             request.session['errors']='Account with this email already exists!'
-    return HttpResponseRedirect('todo/index.html')
+    return HttpResponseRedirect('/')
     
 def login(request):
     checkEmail = request.POST['email']
@@ -63,11 +63,11 @@ def login(request):
             request.session['userName']=currentUser.name
     else:
         request.session['errors'] = 'Invalid email address'
-    return HttpResponseRedirect('todo/index.html')
+    return HttpResponseRedirect('/')
     
 def logout(request):
     request.session.flush()
-    return HttpResponseRedirect('todo/index.html')
+    return HttpResponseRedirect('/')
 
 def taskcreate(request):
     newTitle = request.POST['title']
@@ -82,12 +82,12 @@ def taskcreate(request):
         request.session['errors']=None
     else:
         request.session['errors']='Error saving task.'
-    return HttpResponseRedirect('todo/index.html')
+    return HttpResponseRedirect('/')
 
 def taskdelete(request):
     deleteId = request.POST['deleteId']
     Task.objects.get(id=deleteId).delete()
-    return HttpResponseRedirect('todo/index.html')
+    return HttpResponseRedirect('/')
 
 def tasktoggle(request):
     toggleId = request.POST['taskId']
@@ -96,4 +96,4 @@ def tasktoggle(request):
         Task.objects.filter(id=toggleId).update(isComplete=True)
     else:
         Task.objects.filter(id=toggleId).update(isComplete=False)
-    return HttpResponseRedirect('todo/index.html')
+    return HttpResponseRedirect('/')

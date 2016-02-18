@@ -35,9 +35,9 @@ def register(request):
     newPasswordConfirm = request.POST['password_confirmation']
     if len(newName) < 1 or len(newName) > 50:
         request.session['errors']='Invalid Name Length'
-    elif len(newEmail) < 1 or len(newEmail) > 50::
+    elif len(newEmail) < 1 or len(newEmail) > 50:
         request.session['errors']='Invalid Email Length'
-    elif len(newPassword) < 1 or len(newPassword) > 50::
+    elif len(newPassword) < 1 or len(newPassword) > 50:
         request.session['errors']='Invalid Password Length'
     else:
         if newPassword != newPasswordConfirm:

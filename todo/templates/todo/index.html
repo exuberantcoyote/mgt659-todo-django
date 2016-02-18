@@ -9,18 +9,26 @@
 </div>
 
 {% if currentUser %}
-    <h2>Welcome, {{ currentUser.name }} </h2>
+    <h2>Welcome, {{ currentUser.name }}</h2>
 
     <section>
 		<h2 id="toggle-create">Create a new todo</h2>
 	    <form action="/task/create" method="POST">
 	    	{% csrf_token %}
-    	    <input type="text" name="title" placeholder="Task Title">
-			<input type="text" name="description" placeholder="Description">
-			<input type="text" name="collaborator1" placeholder="Collaborater 1">
-			<input type="text" name="collaborator2" placeholder="Collaborater 2">
-			<input type="text" name="collaborator3" placeholder="Collaborater 3"><br>
-			<button type="submit">Submit</button>
+    	    <div>
+    	        <input type="text" name="title" placeholder="Task Title">
+    	    </div>
+			<div>
+			    <input type="text" name="description" placeholder="Description">
+    		</div>	
+    			<input type="text" name="collaborator1" placeholder="Collaborater 1">
+    		<div>
+    			<input type="text" name="collaborator2" placeholder="Collaborater 2">
+    		</div>		
+    			<input type="text" name="collaborator3" placeholder="Collaborater 3"><br>
+    		<div>
+    			<button type="submit">Submit</button>
+    		</div>		
 		</form>
 	</section>
     <div><br><hr><br></div>
@@ -65,7 +73,7 @@
         {% csrf_token %}
         <input name="email" type="text" placeholder="Email"><br>
         <input name="password" type="text" placeholder="Password"><br>
-        <input type="submit" class="log-in-submit">
+        <button type="submit" class="log-in-submit">Login</button>
     </form>
 </div>
 
@@ -73,14 +81,15 @@
 
 <div>
     <h3>SignUp</h3>
-    <form action="/user/register" method="POST" class="register" style="display: block;">
+    <form id="register" class="register" action="/user/register" method="POST">
         {% csrf_token %}
-        <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name"><br>
-        <input name="email" type="email" class="text-input" placeholder="email"><br>
-        <input name="password" type="password" class="text-input" placeholder="password"><br>
-        <input name="password_confirmation" type="password" class="text-input" placeholder="password confirmation"><br>
-        <input class="sign-up-submit" type="submit">
+        <input name="fl_name" type="text" placeholder="first &amp; last name"><br>
+        <input name="email" type="email" placeholder="email"><br>
+        <input name="password" type="password" placeholder="password"><br>
+        <input name="password_confirmation" type="password" placeholder="password confirmation"><br>
+        <button class="sign-up-submit" type="submit">Sign-Up</button>
     </form>
 </div>
+
 {% endif %}
 {% endblock %}

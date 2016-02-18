@@ -11,33 +11,17 @@
 {% if currentUser %}
     <h2>Welcome, {{ currentUser.name }} </h2>
 
-    <section id="create">
+    <section>
 		<h2 id="toggle-create">Create a new todo</h2>
-		<div class="container">
-		    <form id="signup" action="/task/create" method="POST">
-		    	{% csrf_token %}
-		    	<div class="header">
-                    <div class="wrap">
-    				    <div class="mat-div">
-    				        <input type="text" class="mat-input" id="title" name="title" placeholder="Task Title">
-    				    </div>
-    				    <div class="mat-div">
-    				        <input type="text" class="mat-input" id="description" name="description" placeholder="Description">
-    				    </div>
-    				    <div class="mat-div">
-    				        <input type="text" class="mat-input" id="collab-1" name="collaborator1" placeholder="Collaborater 1">
-    				    </div>
-    				    <div class="mat-div">
-    				        <input type="text" class="mat-input" id="collab-2" name="collaborator2" placeholder="Collaborater 2">
-    				    </div>
-    				    <div class="mat-div">
-    				        <input type="text" class="mat-input" id="collab-3" name="collaborator3" placeholder="Collaborater 3"><br>
-    				    </div>
-    				</div>
-			        <button type="submit" form="signup" value="Submit" id="submit">Submit</button>
-		        </div>
-		    </form>
-	    </div>
+	    <form action="/task/create" method="POST">
+	    	{% csrf_token %}
+    	    <input type="text" name="title" placeholder="Task Title">
+			<input type="text" name="description" placeholder="Description">
+			<input type="text" name="collaborator1" placeholder="Collaborater 1">
+			<input type="text" name="collaborator2" placeholder="Collaborater 2">
+			<input type="text" name="collaborator3" placeholder="Collaborater 3"><br>
+			<button type="submit">Submit</button>
+		</form>
 	</section>
     <div><br><hr><br></div>
     <section class="tasks">
@@ -77,7 +61,7 @@
 {% else %}
 <div>
     <h3>Login</h3>
-    <form class="login-form" action="/user/login" method="POST">
+    <form class="login" action="/user/login" method="POST">
         {% csrf_token %}
         <input name="email" type="text" placeholder="Email"><br>
         <input name="password" type="text" placeholder="Password"><br>
@@ -89,7 +73,7 @@
 
 <div>
     <h3>SignUp</h3>
-    <form action="/user/register" method="post" class="signup-form" style="display: block;">
+    <form action="/user/register" method="POST" class="register" style="display: block;">
         {% csrf_token %}
         <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name"><br>
         <input name="email" type="email" class="text-input" placeholder="email"><br>

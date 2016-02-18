@@ -11,6 +11,7 @@ def index(request):
     if request.session.get('userId') == None:
         context = {
             'errors': request.session.get('errors'),
+            'currentUser' = None,
         }
     else:
         currentUser=User.objects.get(id=request.session.get('userId'))

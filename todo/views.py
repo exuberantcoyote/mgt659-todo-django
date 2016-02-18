@@ -33,15 +33,18 @@ def register(request):
     newEmail = request.POST['email']
     newPassword = request.POST['password']
     newPasswordConfirm = request.POST['password_confirmation']
-    if newPassword != newPasswordConfirm:
-        request.session['errors']='Password does not match'
-    elif User.objects.filter(email=newEmail).count() == 0:
-        newUser = User(name=newName,email=newEmail,hashPassword=newPassword)
-        newUser.save()
-        request.session['userId']=newUser.id
-        request.session['userName']=newUser.name
+    if len(newName) < 1 or len(newName) > 50:
+        request.session['errors']='Invalid Name Length'
     else:
-        request.session['errors']='Account with this email already exists!'
+        if newPassword != newPasswordConfirm:
+            request.session['errors']='Password does not match'
+        elif User.objects.filter(email=newEmail).count() == 0:
+            newUser = User(name=newName,email=newEmail,hashPassword=newPassword)
+            newUser.save()
+            request.session['userId']=newUser.id
+            request.session['userName']=newUser.name
+        else:
+            request.session['errors']='Account with this email already exists!'
     return HttpResponseRedirect('todo/index.html')
     
 def login(request):

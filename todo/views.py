@@ -87,10 +87,10 @@ def login(request):
 
 
 def logout(request):
-    request.session['userId'] = None
-    request.session['currentTaskList'] = None
-    request.session['errors'] = None
-    #request.session.flush()
+    #request.session['userId'] = None
+    #request.session['currentTaskList'] = None
+    #request.session['errors'] = None
+    request.session.flush()
     return redirect('/')
 
 

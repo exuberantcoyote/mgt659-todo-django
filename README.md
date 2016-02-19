@@ -1,4 +1,28 @@
+Trent Tolley's Django / PostgreSQL Todo App for CPSC113 / MGT 659
 
+NOTES TO GRADER:
+
+    All the required functionality is working, but several tests are failing for an unknown reason... so please grade manually
+
+IN CLOUD9:
+    
+    TO RUN:
+    python manage.py runserver $IP:$PORT
+    
+    TO FLUSH DATABASE: 
+    python manage.py flush
+    
+    TO MIGRATE DATABASE:
+    python manage.py makemigrations
+    python manage.py migrate
+    
+IN HEROKU:
+
+    TO RUN:
+    gunicorn mgt659_todo_django.wsgi --log-file -
+    
+    
+Below are the Cloud9 and Heroku original README.md files:     
      ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
     '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
     |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 

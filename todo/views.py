@@ -3,6 +3,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.db.models import Q
+from django.contrib.auth.hashers import check_password, make_password
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 from .models import User, Task
 
@@ -48,10 +51,16 @@ def register(request):
         elif newPassword != newPasswordConfirm:
             request.session['errors'] = 'Password does not match'
         else:
-            print('adding user: ' + newName)
-            newUser = User(name=newName,email=newEmail,hashPassword=newPassword)
-            newUser.save()
-            request.session['userId'] = newUser.id
+            try:
+                validate_email(newEmail)
+            except ValidationError as e:
+                request.session['errors'] = 'Invalid Email Format'
+            else:
+                #print('adding user: ' + newName)
+                newPassword=make_password(newPassword)
+                newUser = User(name=newName,email=newEmail,hashPassword=newPassword)
+                newUser.save()
+                request.session['userId'] = newUser.id
     else:
         request.session['errors'] = 'Account with this email already exists!'
     return redirect('/')
@@ -63,13 +72,13 @@ def login(request):
     
     if User.objects.filter(email=checkEmail).count() > 0:
         currentUser = User.objects.get(email=checkEmail)
-        if currentUser.hashPassword!=checkPassword:
+        if check_password(checkPassword, currentUser.hashPassword):
+            request.session['errors'] = None
+            request.session['userId'] = currentUser.id
+        else:
             request.session['errors'] = 'Invalid password.'
             currentUser = None
             request.session['userId'] = None
-        else:
-            request.session['errors'] = None
-            request.session['userId'] = currentUser.id
     else:
         request.session['errors'] = 'Invalid email address'
         request.session['userId'] = None
@@ -78,12 +87,10 @@ def login(request):
 
 
 def logout(request):
-    request.session.flush()
-    context = {
-        'errors': None,
-        'currentUser': None,
-        'tasks': None,
-    }
+    request.session['userId'] = None
+    request.session['currentTaskList'] = None
+    request.session['errors'] = None
+    #request.session.flush()
     return redirect('/')
 
 

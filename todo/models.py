@@ -7,7 +7,7 @@ from django.db import models
 class User(models.Model):
     email = models.EmailField(max_length=50)
     name = models.TextField(max_length=50)
-    hashPassword = models.TextField(max_length=50)
+    hashPassword = models.TextField(max_length=500)
 
     def _str_(self):
         return self.name

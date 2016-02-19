@@ -37,7 +37,7 @@
             <h3>Todo List</h3>
             {% if tasks %}
                 {% for task in tasks %}
-                    <div class="tasks-list-item complete-task ">
+                    <div class="tasks-list-item{% if task.isComplete %} complete-task {% else %} {% endif %}">
                         <span class="tasks-list-desc task-title">{% if task.isComplete %}<strike>{{ task.title }}</strike>{% else %}{{ task.title }}{% endif %}</span>
                         <form action="/task/toggle-complete" method="POST">
                             {% csrf_token %}
